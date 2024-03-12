@@ -1,0 +1,42 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: demo-vm
+spec:
+  running: false
+  dataVolumeTemplates:
+  - metadata:
+      name: demo-vm-ds-fedora
+    spec:
+      sourceRef:
+        kind: DataSource
+        name: fedora
+        namespace: openshift-virtualization-os-images
+      storage:
+        resources: {}
+  template:
+    metadata:
+      labels:
+        vm: demo-vm
+    spec:
+      terminationGracePeriodSeconds: 180
+      domain:
+        cpu:
+          cores: 1
+          sockets: 1
+          threads: 1
+        devices:
+          rng: {}
+        memory:
+          guest: 1024M
+      volumes:
+      - dataVolume:
+          name: demo-vm-ds-fedora
+        name: demo-vm-ds-fedora
+      - cloudInitNoCloud:
+          userData: |-
+            #cloud-config
+            user: fedora
+            password: fedora
+            chpasswd: { expire: False }
+        name: cloudinitdisk

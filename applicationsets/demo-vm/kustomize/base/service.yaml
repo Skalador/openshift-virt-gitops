@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+  labels:
+    vm: demo-vm
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+  selector:
+    vm: demo-vm
