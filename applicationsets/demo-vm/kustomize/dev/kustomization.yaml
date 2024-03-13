@@ -14,3 +14,10 @@ patches:
       - op: replace
         path: /spec/to/name
         value: dev-my-service
+  - target: 
+      kind: VirtualMachine
+      name: demo-vm-2
+    patch: |-
+      - op: replace
+        path: /spec/running
+        value: false
