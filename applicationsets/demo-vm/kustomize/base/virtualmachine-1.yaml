@@ -1,0 +1,49 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: demo-vm-1
+spec:
+  running: true
+  dataVolumeTemplates:
+  - metadata:
+      name: demo-vm-1-ds-fedora
+    spec:
+      sourceRef:
+        kind: DataSource
+        name: fedora
+        namespace: openshift-virtualization-os-images
+      storage:
+        resources: {}
+  template:
+    metadata:
+      labels:
+        vm: demo-vm
+    spec:
+      terminationGracePeriodSeconds: 180
+      domain:
+        cpu:
+          cores: 1
+          sockets: 1
+          threads: 1
+        devices:
+          rng: {}
+        memory:
+          guest: 1024M
+      volumes:
+      - dataVolume:
+          name: demo-vm-1-ds-fedora
+        name: demo-vm-1-ds-fedora
+      - cloudInitNoCloud:
+          userData: |-
+            #cloud-config
+            user: fedora
+            password: fedora
+            chpasswd: { expire: False }
+            bootcmd:
+              - sudo dnf update
+              - sudo dnf install httpd -y
+              - sudo sed -iE 's/Listen 80/Listen 8080/' /etc/httpd/conf/httpd.conf
+              - sudo systemctl enable httpd.service
+              - sudo systemctl start httpd.service
+              - echo 'This demo VM 1 :)' > /var/www/html/index.html
+        name: cloudinitdisk

@@ -1,12 +1,12 @@
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
 metadata:
-  name: demo-vm
+  name: demo-vm-2
 spec:
   running: true
   dataVolumeTemplates:
   - metadata:
-      name: demo-vm-ds-fedora
+      name: demo-vm-2-ds-fedora
     spec:
       sourceRef:
         kind: DataSource
@@ -27,19 +27,12 @@ spec:
           threads: 1
         devices:
           rng: {}
-          disks:
-            - name: cloudinitdisk
-              disk:
-                bus: virtio
-            - name: configmap-disk
-              serial: configmap
-              volumeName: configmap-volume
         memory:
           guest: 1024M
       volumes:
       - dataVolume:
-          name: demo-vm-ds-fedora
-        name: demo-vm-ds-fedora
+          name: demo-vm-2-ds-fedora
+        name: demo-vm-2-ds-fedora
       - cloudInitNoCloud:
           userData: |-
             #cloud-config
@@ -47,9 +40,10 @@ spec:
             password: fedora
             chpasswd: { expire: False }
             bootcmd:
-              - "mkdir /mnt/myconfigmap"
-              - "mount /dev/disk/by-id/ata-QEMU_HARDDISK_configmap /mnt/myconfigmap"
+              - sudo dnf update
+              - sudo dnf install httpd -y
+              - sudo sed -iE 's/Listen 80/Listen 8080/' /etc/httpd/conf/httpd.conf
+              - sudo systemctl enable httpd.service
+              - sudo systemctl start httpd.service
+              - echo 'This demo VM 2 :)' > /var/www/html/index.html
         name: cloudinitdisk
-      - name: configmap-volume
-        configMap:
-          name: vm-startup-script
