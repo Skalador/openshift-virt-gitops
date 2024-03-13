@@ -39,7 +39,7 @@ spec:
             user: fedora
             password: fedora
             chpasswd: { expire: False }
-            bootcmd:
+            runcmd:
               - sudo dnf update
               - sudo dnf install httpd -y
               - sudo sed -iE 's/Listen 80/Listen 8080/' /etc/httpd/conf/httpd.conf
