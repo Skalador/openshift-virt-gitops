@@ -1,7 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-bases:
+resources:
   - ../base
 
 namePrefix: dev-
@@ -14,3 +14,11 @@ patches:
       - op: replace
         path: /spec/to/name
         value: dev-my-service
+  - target:
+      kind: VirtualMachine
+      name: demo-vm
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/volumes/2/configMap/name
+        value: dev-vm-startup-script
+

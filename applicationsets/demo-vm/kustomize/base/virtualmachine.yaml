@@ -27,6 +27,13 @@ spec:
           threads: 1
         devices:
           rng: {}
+          disks:
+            - name: cloudinitdisk
+              disk:
+                bus: virtio
+            - name: configmap-disk
+              serial: configmap
+              volumeName: configmap-volume
         memory:
           guest: 1024M
       volumes:
@@ -39,4 +46,10 @@ spec:
             user: fedora
             password: fedora
             chpasswd: { expire: False }
+            bootcmd:
+              - "mkdir /mnt/myconfigmap"
+              - "mount /dev/disk/by-id/ata-QEMU_HARDDISK_configmap /mnt/myconfigmap"
         name: cloudinitdisk
+      - name: configmap-volume
+        configMap:
+          name: vm-startup-script
