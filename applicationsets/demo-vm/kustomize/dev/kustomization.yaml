@@ -6,9 +6,6 @@ bases:
 
 namePrefix: dev-
 
-commonLabels:
-  env: dev
-
 patches:
   - target:
       kind: Route
