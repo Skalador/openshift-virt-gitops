@@ -5,3 +5,15 @@ bases:
   - ../base
 
 namePrefix: dev-
+
+commonLabels:
+  env: dev
+
+patches:
+  - target:
+      kind: Route
+      name: my-route
+    patch: |-
+      - op: replace
+        path: /spec/to/name
+        value: dev-my-service
