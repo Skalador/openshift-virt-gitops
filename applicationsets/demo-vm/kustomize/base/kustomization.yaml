@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - virtualmachine.yaml
   - service.yaml
+  - route.yaml
