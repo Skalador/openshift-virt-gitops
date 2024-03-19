@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: demo-db
+  namespace: openshift-gitops
+spec:
+  generators:
+  - list:
+      elements:
+      - appName: dev-demo-db
+        gitPath: dev
+        namespace: dev-demo-db
+      - appName: prod-demo-db
+        gitPath: prod
+        namespace: prod-demo-db
+  template:
+    metadata:
+      name: "{{appName}}"
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: ".;.."
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/Skalador/openshift-virt-gitops.git
+        targetRevision: HEAD
+        path: "applicationsets/demo-db/kustomize/{{gitPath}}"
+      destination:
+        name: in-cluster
+        namespace: "{{namespace}}"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
