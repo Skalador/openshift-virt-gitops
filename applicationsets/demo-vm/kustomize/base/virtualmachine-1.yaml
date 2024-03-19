@@ -45,5 +45,6 @@ spec:
               - sudo sed -iE 's/Listen 80/Listen 8080/' /etc/httpd/conf/httpd.conf
               - sudo systemctl enable httpd.service
               - sudo systemctl start httpd.service
+              - sudo dnf install mariadb
               - echo 'This is demo VM 1 :)' > /var/www/html/index.html
         name: cloudinitdisk
