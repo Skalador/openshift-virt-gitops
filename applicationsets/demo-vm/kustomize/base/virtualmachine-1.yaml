@@ -17,6 +17,7 @@ spec:
   template:
     metadata:
       labels:
+        vm-name: demo-vm-1
         vm: demo-vm
     spec:
       terminationGracePeriodSeconds: 180
@@ -45,6 +46,6 @@ spec:
               - sudo sed -iE 's/Listen 80/Listen 8080/' /etc/httpd/conf/httpd.conf
               - sudo systemctl enable httpd.service
               - sudo systemctl start httpd.service
-              - sudo dnf install mariadb
+              - sudo dnf install mariadb -y
               - echo 'This is demo VM 1 :)' > /var/www/html/index.html
         name: cloudinitdisk
