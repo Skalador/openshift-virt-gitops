@@ -22,10 +22,10 @@ spec:
     spec:
       terminationGracePeriodSeconds: 180
       readinessProbe:
-        initialDelaySeconds: 120
+        initialDelaySeconds: 180
         periodSeconds: 20
         timeoutSeconds: 10
-        failureThreshold: 3
+        failureThreshold: 10
         successThreshold: 3
         httpGet:
           port: 8080
