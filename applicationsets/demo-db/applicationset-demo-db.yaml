@@ -23,7 +23,7 @@ spec:
       source:
         repoURL: https://github.com/Skalador/openshift-virt-gitops.git
         targetRevision: HEAD
-        path: "applicationsets/demo-db/kustomize/{{gitPath}}"
+        path: "applicationsets/demo-db/kustomize/overlays/{{gitPath}}"
       destination:
         name: in-cluster
         namespace: "{{namespace}}"
