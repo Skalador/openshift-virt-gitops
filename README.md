@@ -3,11 +3,14 @@ Managing virtual machines of OpenShift Virtualization with OpenShift GitOps.
 
 # TL;DR
 
-Provision the setup
+## Provision the setup
 ```sh
+# GitOps Operator
 oc apply -f operators/gitops/operator-gitops.yaml
-oc create -f operators/virtualization/operator-virtualization.yaml
 
+# OpenShift Virtualization
+oc create -f operators/virtualization/operator-virtualization.yaml
+# HyperConvergedController CR
 oc apply -f operators/virtualization/hyperconverged.yaml
 
 oc get secret/openshift-gitops-cluster -n openshift-gitops -o jsonpath='{.data.admin\.password}' | base64 -d
@@ -20,7 +23,7 @@ oc adm policy add-role-to-user admin system:serviceaccount:openshift-gitops:open
 oc adm policy add-role-to-user admin system:serviceaccount:openshift-gitops:openshift-gitops-argocd-application-controller -n prod-demo-db
 ```
 
-Demonstrate route to production VMs:
+## Demonstrate route to production VMs:
 ```sh
 oc get vmi -n prod-demo-vm -o custom-columns=VirtualMachineInstance:.metadata.name,Phase:.status.phase
 VirtualMachineInstance   Phase
@@ -42,7 +45,7 @@ This is demo VM 2 :)
 
 ```
 
-Connect from the VM to the database inside a container:
+## Connect from the VM to the database inside a container:
 ```sh
 oc -n dev-demo-db get svc
 NAME        TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
@@ -62,7 +65,7 @@ mysqlshow -u developer -pdeveloper -h dev-my-db.dev-demo-db.svc.cluster.local
 exit
 ```
 
-Connect from the database pod/container to the VM service:
+## Connect from the database pod/container to the VM service:
 ```sh
 endpoint=$(oc get route -n dev-demo-vm dev-my-route  -ojsonpath='{.spec.host}')
 dbpod=$(oc -n dev-demo-db get pods -l=app=my-db -oname)
