@@ -24,3 +24,10 @@ spec:
   name: openshift-gitops-operator
   source: redhat-operators
   sourceNamespace: openshift-marketplace
+---
+kind: Group
+apiVersion: user.openshift.io/v1
+metadata:
+  name: cluster-admins
+users:
+  - admin
