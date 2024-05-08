@@ -89,7 +89,7 @@ VMs can be managed via Git.
 
 ### Stop VM
 
-![Stop VM](./src/video/start_vm_via_git.gif)
+![Stop VM](./src/video/stop_vm_via_git.gif)
 
 ## Demonstrate route to production VMs:
 ```sh
